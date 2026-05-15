@@ -276,12 +276,12 @@ var costsRaw = costSlp
 var costsMax = (costsRaw.gt(maxCost).multiply(maxCost))
     .add(costsRaw.lte(maxCost).multiply(costsRaw));
 
-var bitSel = prompt('Select 8-bit or 16-bit raster output', '16-bit');
+var bitSel = prompt('Select 8-bit or floating-point raster output', 'Floating');
 
 if (bitSel == '8-bit') {var costs = (costsMax.divide(maxCost)).multiply(255).byte().clip(geometry).unmask(255); //8-bit scaling of values
     Map.addLayer(costs, {min:1, max:150, palette: '0f00ff, 03ff00, efff00, ffbc00, ff0000, ff0081'}, 'Cost surface');
 } 
-else {var costs = costsMax.multiply(ee.Number(10).pow(4)).round().divide(ee.Number(10).pow(4)).multiply(0.0001).clip(geometry).unmask(0.004); //16-bit scaling of values
+else {var costs = costsMax.multiply(ee.Number(10).pow(4)).round().divide(ee.Number(10).pow(4)).multiply(0.0001).clip(geometry).unmask(0.004); //floating-point scaling of values
     Map.addLayer(costs, {min:0.0001, max:0.001, palette: '0f00ff, 03ff00, efff00, ffbc00, ff0000, ff0081'}, 'Cost surface');
 }
 
